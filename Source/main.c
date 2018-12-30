@@ -3,6 +3,29 @@
 const int WIN_WIDTH = 640;
 const int WIN_HEIGHT = 400;
 
+int SDL_start(SDL_Window* window ,SDL_Surface* surface )
+{
+  int OutVal = 0;
+
+  if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  {
+    OutVal = -1;
+  };
+  if (OutVal == 0)
+  {
+    window = SDL_CreateWindow("WINDOW_TITLE",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,WIN_WIDTH,WIN_HEIGHT,SDL_WINDOW_SHOWN);
+    if (window == NULL)
+    {
+      OutVal = -2;
+    }
+    else
+    {
+      surface = SDL_GetWindowSurface(window);
+    };
+  };
+  return OutVal;
+};
+
 int main (int argc, char* args[])
 {
   SDL_Window* window = NULL;

@@ -1,11 +1,12 @@
 CFLAGS = -I./Header `sdl2-config --cflags --libs`
-OBJDIR = Obj
 
 FILES = $(wildcard ./Source/*.c ./Source/*.cpp)
+OBJ = $(patsubst ./Source/%.c,./Obj/%.o,$(FILES))
 
-M: $(OBJ)
-		gcc -c $(FILES) $(CFLAGS) -o ./Obj/Temp.o
-		gcc ./Obj/Temp.o $(CFLAGS)  -o main
+M: L
+		g++  $(OBJ) $(CFLAGS)  -o main
+L:
+		g++ -c $(FILES) $(CFLAGS) -o $(OBJ)
 
 clean:
 		rm -f Bin/* Dep/*
