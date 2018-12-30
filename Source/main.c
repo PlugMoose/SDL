@@ -6,10 +6,8 @@ const int WIN_HEIGHT = 400;
 int main (int argc, char* args[])
 {
   SDL_Window* window = NULL;
-
   SDL_Surface* surface = NULL;
   int INPUT;
-
   if (SDL_Init (SDL_INIT_VIDEO) < 0)
   {
       printf ("SDL did't work ERROR:%s\n",SDL_GetError());
@@ -22,8 +20,13 @@ int main (int argc, char* args[])
     return (-2);
   };
   surface = SDL_GetWindowSurface(window);
-  
-  scanf("%d",&INPUT);
+  SDL_FillRect (surface , NULL, SDL_MapRGB(surface->format,0xAA,0xFF,0xFF) );
+  SDL_UpdateWindowSurface(window);
+  SDL_Delay(2000);
   printf ("SDL Working\n");
+  scanf("%d",&INPUT);
+  SDL_DestroyWindow(window);
+  printf ("SDL Working\n");
+  SDL_Quit();
   return 0;
 };
