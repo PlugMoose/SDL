@@ -1,12 +1,17 @@
-CFLAGS = -I./Header `sdl2-config --cflags --libs`
+CFLAGS = -I./Headers -lSDL2_image -I/usr/include/SDL2 -D_REENTRANT -lSDL2
 
-FILES = $(wildcard ./Source/*.c ./Source/*.cpp)
-OBJ = $(patsubst ./Source/%.c,./Obj/%.o,$(FILES))
+FILESC = $(wildcard ./Source/*.c)
+FILES+ = $(wildcard ./Source/*.cpp)
+FILES = $(FILESC) $(FILES+)
+OBJC = $(patsubst ./Source/%.c,./Obj/%.o,$(FILESC))
+OBJ+ = $(patsubst ./Source/%.cpp,./Obj/%.o,$(FILES+))
+OBJ = $(OBJC) $(OBJ+)
 
-M: L
-		g++  $(OBJ) $(CFLAGS)  -o ./Bin/Main
-L:
-		g++ -c $(FILES) $(CFLAGS) -o $(OBJ)
+MASTER:
+		g++ $(FILES) $(CFLAGS)  -o ./Bin/Main
 
-clean:
-		rm -f Bin/* Dep/*
+
+
+#Master:
+#		g++ -c $(CFLAGS) $(FILESC) $(FILES+) -o $(OBJ)
+#		g++ $(CFLAGS) -o ./Bin/Main $(OBJ)
