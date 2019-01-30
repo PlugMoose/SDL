@@ -8,7 +8,7 @@ OBJ+ = $(patsubst ./Source/%.cpp,./Obj/%.o,$(FILES+))
 OBJ = $(OBJC) $(OBJ+)
 
 MASTER:
-		g++ $(FILES) $(CFLAGS)  -o ./Bin/Main
+	g++ $(FILES) $(CFLAGS)  -o ./Bin/Main
 
 
 
