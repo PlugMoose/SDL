@@ -1,20 +1,23 @@
-#include "stdio.h"
-#include "stdlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "SDL.h"
 #include "SDL2/SDL_image.h"
+#include <math.h>
 const unsigned char DIRT = 0;
 const unsigned char GRASS = 1;
 const unsigned char SNOW = 2;
 const unsigned char WATER = 3;
 const unsigned char TERRIAN_NUMBER = 4;
+const unsigned char TILE_WIDTH = 32;
+const unsigned char TILE_HEIGHT = 32;
 const unsigned char MAP_LAYERS = 20;
 const unsigned int MAP_WIDTH = 1000;
 const unsigned int MAP_HEIGHT = 1000;
 const unsigned int WIN_WIDTH = 1000;
 const unsigned int WIN_HEIGHT = 700;
-const unsigned char INITAL_SQUARE_WIDTH = 10;
-const unsigned char INITAL_SQUARE_HEIGHT = 10;
+const unsigned char INITAL_SQUARE_WIDTH = 32;
+const unsigned char INITAL_SQUARE_HEIGHT = 32;
 
 bool SDL_start(SDL_Window **Window , SDL_Renderer** Renderer)
 {
@@ -85,6 +88,25 @@ int main (int argc, char* args[])
   ImageLoader = IMG_Load("./Res/Water.png");
   TerriansTextures[4] = SDL_CreateTextureFromSurface(Renderer,ImageLoader);
 
+  SDL_Rect Tile;
+  Tile.x = 0;
+  Tile.y = 0;
+  Tile.w = 32;
+  Tile.h = 32;
+
+  SDL_SetRenderDrawColor(Renderer, 2, 200, 250, 0);
+  SDL_RenderClear(Renderer);
+  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
+  Tile.x += 2*TILE_WIDTH*3/4;
+  SDL_RenderPresent(Renderer);
+  SDL_Delay(2000);
+  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
+  Tile.x = 0 + TILE_WIDTH*3/4;
+  Tile.y += (TILE_HEIGHT/2);
+  SDL_RenderPresent(Renderer);
+  SDL_Delay(2000);
+  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
+  SDL_RenderPresent(Renderer);
 
 
   printf ("SDL Working\n");
