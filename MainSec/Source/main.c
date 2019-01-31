@@ -11,9 +11,6 @@ const unsigned char WATER = 3;
 const unsigned char TERRIAN_NUMBER = 4;
 const unsigned char TILE_WIDTH = 32;
 const unsigned char TILE_HEIGHT = 32;
-const unsigned char MAP_LAYERS = 20;
-const unsigned int MAP_WIDTH = 1000;
-const unsigned int MAP_HEIGHT = 1000;
 const unsigned int WIN_WIDTH = 1000;
 const unsigned int WIN_HEIGHT = 700;
 const unsigned char INITAL_SQUARE_WIDTH = 32;
@@ -74,6 +71,7 @@ int main (int argc, char* args[])
   SDL_Renderer* Renderer = NULL;
   SDL_Surface* ImageLoader = NULL;
   SDL_Texture** TerriansTextures = NULL;
+  FILE* MapReader;
   TerriansTextures = (SDL_Texture**)malloc(TERRIAN_NUMBER*sizeof(SDL_Texture*));
   if (!SDL_start(&Window ,&Renderer)||TerriansTextures == NULL)
   {
@@ -87,28 +85,43 @@ int main (int argc, char* args[])
   TerriansTextures[3] = SDL_CreateTextureFromSurface(Renderer,ImageLoader);
   ImageLoader = IMG_Load("./Res/Water.png");
   TerriansTextures[4] = SDL_CreateTextureFromSurface(Renderer,ImageLoader);
-
+  MapReader = fopen("./Res/map.txt","r");
+  if (MapReader == NULL)
+  {
+    printf ("please check Res for map.txt");
+    return -2;
+  };
+  char Size[5];
+  unsigned int MapWidth = 0;
+  unsigned int MapHeight = 0;
+  fscanf (MapReader,"%s",Size);
+  MapHeight = (Size[0] - '0')*10;
+  MapHeight += (Size[1] - '0'+1);
+  MapWidth = (Size[2] - '0')*10;
+  MapWidth += (Size[3] - '0'+1);
   SDL_Rect Tile;
-  Tile.x = 0;
-  Tile.y = 0;
-  Tile.w = 32;
-  Tile.h = 32;
-
-  SDL_SetRenderDrawColor(Renderer, 2, 200, 250, 0);
-  SDL_RenderClear(Renderer);
-  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
-  Tile.x += 2*TILE_WIDTH*3/4;
-  SDL_RenderPresent(Renderer);
-  SDL_Delay(2000);
-  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
-  Tile.x = 0 + TILE_WIDTH*3/4;
-  Tile.y += (TILE_HEIGHT/2);
-  SDL_RenderPresent(Renderer);
-  SDL_Delay(2000);
-  SDL_RenderCopy(Renderer,TerriansTextures[1],NULL,&Tile);
-  SDL_RenderPresent(Renderer);
-
-
+  unsigned int** Map;
+  Map = malloc(MapHeight*(sizeof(unsigned int*)));
+  for (unsigned char HeightLayer = 1;!(HeightLayer > MapHeight);HeightLayer++)
+  {
+    printf (":%d\n",HeightLayer);
+    Map[HeightLayer] = malloc(MapWidth*(sizeof(unsigned int)));
+  };
+  printf("Map Built");
+  char * Parser;
+  Parser = malloc(MapWidth*sizeof(char));
+  for (unsigned char HeightLayer = 1;(HeightLayer < MapHeight);HeightLayer++)
+  {
+    printf("\n");
+    printf (":%d",HeightLayer);
+    fscanf(MapReader,"%s",Parser);
+    for (unsigned char X = 1;!(X > 10);X++)
+    {
+      Map[HeightLayer][X] = Parser[X] - '0';
+      printf(":%d",Map[HeightLayer][X]);
+    };
+  };
+  fclose(MapReader);
   printf ("SDL Working\n");
   SDL_Delay(2000);
   printf ("SDL Working\n");
