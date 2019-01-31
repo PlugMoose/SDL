@@ -67,6 +67,7 @@ void SDL_Exit(SDL_Window** Window,SDL_Renderer** Renderer,SDL_Texture*** Texture
 
 int main (int argc, char* args[])
 {
+  int spacer;
   SDL_Window* Window = NULL;
   SDL_Renderer* Renderer = NULL;
   SDL_Surface* ImageLoader = NULL;
@@ -109,7 +110,7 @@ int main (int argc, char* args[])
   };
   printf("Map Built");
   char * Parser;
-  Parser = malloc(MapWidth*sizeof(char));
+  Parser = malloc((MapWidth+1)*sizeof(char));
   for (unsigned char HeightLayer = 1;(HeightLayer < MapHeight);HeightLayer++)
   {
     printf("\n");
@@ -122,10 +123,11 @@ int main (int argc, char* args[])
     };
   };
   fclose(MapReader);
-  printf ("SDL Working\n");
+  printf ("SDL 1Working\n");
   SDL_Delay(2000);
-  printf ("SDL Working\n");
+  printf ("SDL2 Working\n");
   SDL_Exit(&Window,&Renderer,&TerriansTextures,&ImageLoader);
+  spacer = 2;
   free(TerriansTextures);
   return 0;
 };
