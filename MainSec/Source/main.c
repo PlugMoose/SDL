@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "SDL.h"
 #include "SDL2/SDL_image.h"
-#include "Shapes.h"
+#include "Common.h"
 const int MAP_LAYERS = 5;
 const int MAP_WIDTH = 100;
 const int MAP_HEIGHT = 70;
@@ -21,15 +21,23 @@ bool SDL_start(SDL_Window **Window , SDL_Surface **Surface)
   }
   else
   {
-    *Window = SDL_CreateWindow("WINDOW_TITLE",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,WIN_WIDTH,WIN_HEIGHT,SDL_WINDOW_SHOWN);
-    if (Window == NULL)
+    if (IMG_Init(IMG_INIT_PNG) < 0)
     {
       OutVal = false;
-      printf("Window == Null:%s",SDL_GetError());
+      printf ("SDL did't work ERROR:%s\n",SDL_GetError());
     }
     else
     {
-      *Surface = SDL_GetWindowSurface(*Window);
+      *Window = SDL_CreateWindow("WINDOW_TITLE",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,WIN_WIDTH,WIN_HEIGHT,SDL_WINDOW_SHOWN);
+      if (Window == NULL)
+      {
+        OutVal = false;
+        printf("Window == Null:%s",SDL_GetError());
+      }
+      else
+      {
+        *Surface = SDL_GetWindowSurface(*Window);
+      };
     };
   };
   return OutVal;
@@ -51,11 +59,11 @@ int main (int argc, char* args[])
     return -1;
   };
 
-  
+
 
   SDL_UpdateWindowSurface(Window);
   printf ("SDL Working\n");
-  SDL_Delay(5000);
+  SDL_Delay(2000);
   printf ("SDL Working\n");
   SDL_Exit(&Window);
   return 0;

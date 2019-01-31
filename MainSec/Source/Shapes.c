@@ -1,12 +1,12 @@
 #include "SDL.h"
 
-struct Point
+typedef struct
 {
   unsigned short x;
   unsigned short y;
-};
+}Point;
 
-struct Spots_Hex
+typedef struct
 {
   Point One;
   Point Two;
@@ -14,14 +14,14 @@ struct Spots_Hex
   Point Four;
   Point Five;
   Point Six;
-};
+}Spots_Hex;
 
-struct SDL_Hexagon
+typedef struct
 {
   Point Center;
   unsigned int Radius;
   Spots_Hex Points;
-};
+}SDL_Hexagon;
 
 SDL_Hexagon Create_Hexagon(Point Center , unsigned int Radius)//config 1
 {

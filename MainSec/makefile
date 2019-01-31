@@ -8,7 +8,7 @@ OBJ+ = $(patsubst ./Source/%.cpp,./Obj/%.o,$(FILES+))
 OBJ = $(OBJC) $(OBJ+)
 
 MASTER:
-	gcc $(FILES) $(CFLAGS)  -o ./Bin/Main
+	gcc $(FILESC) $(CFLAGS)  -o ./Bin/Main
 
 
 
