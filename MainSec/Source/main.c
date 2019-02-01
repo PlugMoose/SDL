@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include "SDL.h"
 #include "SDL2/SDL_image.h"
-#include <math.h>
 const unsigned char DIRT = 0;
 const unsigned char GRASS = 1;
 const unsigned char SNOW = 2;
@@ -66,7 +65,7 @@ void SDL_Exit(SDL_Window** Window,SDL_Renderer** Renderer,SDL_Texture*** Texture
 int main (int argc, char* args[])
 {
   int spacer;
-  int Scale = 1;
+  int Scale = 2;
   SDL_Window* Window = NULL;
   SDL_Renderer* Renderer = NULL;
   SDL_Surface* ImageLoader = NULL;
@@ -102,13 +101,13 @@ int main (int argc, char* args[])
   SDL_Rect TileA;
   TileA.x = 0;
   TileA.y = 0;
-  TileA.w = 32;
-  TileA.h = 32;
+  TileA.w = (int)(TILE_WIDTH*Scale);
+  TileA.h = (int)(TILE_HEIGHT*Scale);
   SDL_Rect TileB;
-  TileB.x = TILE_WIDTH*3/4;
-  TileB.y = TILE_HEIGHT/2;
-  TileB.w = 32;
-  TileB.h = 32;
+  TileB.x = (int)(TILE_WIDTH*Scale)*3/4;
+  TileB.y = (int)(TILE_HEIGHT*Scale)/2;
+  TileB.w = (int)(TILE_WIDTH*Scale);
+  TileB.h = (int)(TILE_HEIGHT*Scale);
   SDL_Rect TileC;
   unsigned int** Map;
   Map = malloc((MapHeight+1)*(sizeof(unsigned int*)));
@@ -139,7 +138,7 @@ int main (int argc, char* args[])
   {
     for (unsigned char x = 1;(x < MapWidth);x = x + 1)
     {
-      TileC.x = TileC.x + (TILE_WIDTH*Scale)*1.5;
+      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
       if (!( x >  MapWidth || x < 1 || HeightLayer > MapHeight || HeightLayer < 1 ))
       {
         printf("\nHeightLayer=%d\nx=%d\nMap=%d",HeightLayer,x,Map[HeightLayer][x]);
@@ -147,16 +146,16 @@ int main (int argc, char* args[])
       };
     };
     TileC.x = TileA.x;
-    TileC.y = TileC.y + TILE_HEIGHT*Scale;
+    TileC.y = TileC.y + (int)(TILE_HEIGHT*Scale);
   };
   SDL_RenderPresent(Renderer);
-  SDL_Delay(3000);
+  SDL_Delay(10000);
   TileC = TileB;
   for (unsigned char HeightLayer = 2;(HeightLayer < MapHeight+1);HeightLayer= HeightLayer + 2)
   {
     for (unsigned char x = 1;(x < MapWidth);x = x + 1)
     {
-      TileC.x = TileC.x + (TILE_WIDTH*Scale)*1.5;
+      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
       if (!( x >  MapWidth || x < 1 || HeightLayer > MapHeight || HeightLayer < 1 ))
       {
         printf("\nHeightLayer=%d:x=%d:Map=%d",HeightLayer,x,Map[HeightLayer][x]);
@@ -164,7 +163,7 @@ int main (int argc, char* args[])
       };
     };
     TileC.x = TileB.x;
-    TileC.y = TileC.y + (TILE_HEIGHT*Scale);
+    TileC.y = TileC.y + (unsigned int)(TILE_HEIGHT*Scale);
   };
   printf("%d",Map[10][10]);
   SDL_RenderPresent(Renderer);
