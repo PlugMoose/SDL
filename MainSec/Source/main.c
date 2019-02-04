@@ -94,10 +94,10 @@ int main (int argc, char* args[])
   unsigned int MapWidth = 0;
   unsigned int MapHeight = 0;
   fscanf (MapReader,"%s",Size);
-  MapHeight = (Size[0] - '0')*10;
-  MapHeight += (Size[1] - '0'+1);
-  MapWidth = (Size[2] - '0')*10;
-  MapWidth += (Size[3] - '0'+1);
+  MapHeight = ((Size[0]-'0')*10)+(Size[1]-'0');
+  printf("\nMapHeight:%d\n",MapHeight);
+  MapWidth = ((Size[2]-'0')*10)+(Size[3]-'0');
+  printf("\nMapWidth:%d\n",MapWidth);
   SDL_Rect TileA;
   TileA.x = 0;
   TileA.y = 0;
@@ -110,67 +110,64 @@ int main (int argc, char* args[])
   TileB.h = (int)(TILE_HEIGHT*Scale);
   SDL_Rect TileC;
   unsigned int** Map;
-  Map = malloc((MapHeight+1)*(sizeof(unsigned int*)));
-  for (unsigned char HeightLayer = 1;(HeightLayer < MapHeight+1);HeightLayer++)
+  Map = malloc((MapHeight+1)*sizeof(unsigned int*));
+  for (unsigned char HeightLayer = 1;HeightLayer < MapHeight+1;HeightLayer++)
   {
     printf ("Decleration:HeightLayer:%d\n",HeightLayer);
     Map[HeightLayer] = malloc((MapWidth+1)*(sizeof(unsigned int)));
   };
   printf("Map Built");
   char* Parser;
-  Parser = malloc((MapWidth+1)*sizeof(char));
-  for (unsigned char HeightLayer = 0;(HeightLayer < MapHeight);HeightLayer++)
+  Parser = malloc((MapWidth)*sizeof(char));
+  for (unsigned char HeightLayer = 1;HeightLayer < MapHeight+1;HeightLayer++)
   {
     printf ("\nAssginment:HeightLayer:%d\n",HeightLayer);
     fscanf(MapReader,"%s",Parser);
     printf("%s",Parser);
-    for (unsigned char x = 0;x < MapWidth;x++)
+    for (unsigned char x = 1;x < MapWidth+1;x++)
     {
-      Map[HeightLayer][x+1] = Parser[x] - '0';
-      printf("Assginment:MapValues:%d::%d::%d\n",Map[HeightLayer][x+1],HeightLayer,x);
+      Map[HeightLayer][x] = Parser[x] - '0';
+      printf("Assginment:MapValues:%d:%d::%d::%d\n",(Parser[x] - '0'),Map[HeightLayer][x],HeightLayer,x);
     };
   };
   SDL_SetRenderDrawColor(Renderer, 168, 230, 255, 255);
   SDL_RenderClear(Renderer);
   fclose(MapReader);
   TileC = TileA;
-  for (unsigned char HeightLayer = 1;(HeightLayer < MapHeight);HeightLayer= HeightLayer + 2)
+  for (unsigned char HeightLayer = 1;(HeightLayer < MapHeight+1);HeightLayer= HeightLayer + 2)
   {
-    for (unsigned char x = 1;(x < MapWidth);x = x + 1)
+    for (unsigned char x = 1;(x < MapWidth+1);x = x + 1)
     {
-      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
       if (!( x >  MapWidth || x < 1 || HeightLayer > MapHeight || HeightLayer < 1 ))
       {
         printf("\nHeightLayer=%d\nx=%d\nMap=%d",HeightLayer,x,Map[HeightLayer][x]);
         SDL_RenderCopy(Renderer, TerriansTextures[Map[HeightLayer][x]+1], NULL, &TileC);
       };
+      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
     };
     TileC.x = TileA.x;
     TileC.y = TileC.y + (int)(TILE_HEIGHT*Scale);
   };
-  SDL_RenderPresent(Renderer);
-  SDL_Delay(10000);
   TileC = TileB;
   for (unsigned char HeightLayer = 2;(HeightLayer < MapHeight+1);HeightLayer= HeightLayer + 2)
   {
-    for (unsigned char x = 1;(x < MapWidth);x = x + 1)
+    for (unsigned char x = 1;(x < MapWidth+1);x = x + 1)
     {
-      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
       if (!( x >  MapWidth || x < 1 || HeightLayer > MapHeight || HeightLayer < 1 ))
       {
         printf("\nHeightLayer=%d:x=%d:Map=%d",HeightLayer,x,Map[HeightLayer][x]);
         SDL_RenderCopy(Renderer, TerriansTextures[Map[HeightLayer][x]+1], NULL, &TileC);
       };
+      TileC.x = TileC.x + (int)((TILE_WIDTH*Scale)*1.5);
     };
     TileC.x = TileB.x;
     TileC.y = TileC.y + (unsigned int)(TILE_HEIGHT*Scale);
   };
-  printf("%d",Map[10][10]);
   SDL_RenderPresent(Renderer);
   printf ("\nSDL 1Working\n");
-  SDL_Delay(10000);
+  SDL_Delay(1000);
   SDL_Exit(&Window,&Renderer,&TerriansTextures,&ImageLoader);
-  //spacer = 2;
+  spacer = 2;
   free(Map);
   free(Parser);
   free(TerriansTextures);
