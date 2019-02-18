@@ -64,7 +64,6 @@ void SDL_Exit(SDL_Window** Window,SDL_Renderer** Renderer,SDL_Texture*** Texture
 
 int main (int argc, char* args[])
 {
-  int spacer;
   int Scale = 2;
   SDL_Window* Window = NULL;
   SDL_Renderer* Renderer = NULL;
@@ -167,7 +166,6 @@ int main (int argc, char* args[])
   printf ("\nSDL 1Working\n");
   SDL_Delay(1000);
   SDL_Exit(&Window,&Renderer,&TerriansTextures,&ImageLoader);
-  spacer = 2;
   free(Map);
   free(Parser);
   free(TerriansTextures);
